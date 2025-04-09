@@ -11,14 +11,14 @@ for file in doc:
         
         
         
-"""for a in doc:
+for a in doc:
     x = a.get_textpage("text").extractJSON()
     values = json.loads(x)
     for value in values['blocks']:
         for val in value['lines']:
             for index, v in enumerate(val['spans']):
                 print(f"{index}/{v['text']}")
-            """
+
     
 
 """def extrac_data_from_files(dir):
