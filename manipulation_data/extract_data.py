@@ -1,40 +1,54 @@
-import pymupdf
 import os
 import json
+from pdfminer.high_level import extract_pages
+from pdfminer.layout import LTTextContainer
 
-doc = pymupdf.open(f'inputs/{2021}/Centro de Lectura y Biblioteca Escolar (CRA).pdf')
 
-for file in doc:
-    value  = file.get_textpage().extractWORDS()
-    for v in value:
-        print(v[4])
+
+list_texts = []
+dict_texts = dict()
+for page_layout in extract_pages('C:/Users/joaquin.astorga/mis_proyectos/BAPS/app/inputs/2021/Aula 360.pdf'):
+    for element in page_layout:
+        if isinstance(element, LTTextContainer):
+            list_texts.append(element.get_text())
+
         
+for index, text in enumerate(list_texts):
+    if index == 11:
+        split_words = text.split("\n")
+#print(split_words)
+
+for value in split_words:
+    print(value)
+
+"""for index, text in enumerate(list_texts):
+    if index == 1:
+        dict_texts['Nombre del programa'] = text
+        dict_texts['año del programa'] = 2021
+    if index == """
         
-        
-for a in doc:
-    x = a.get_textpage("text").extractJSON()
-    values = json.loads(x)
-    for value in values['blocks']:
-        for val in value['lines']:
-            for index, v in enumerate(val['spans']):
-                print(f"{index}/{v['text']}")
 
-    
+"""directories = os.listdir("app/inputs")
+for directory in directories:
+    for file in os.listdir(f'app/inputs/{directory}'):
+        document = pymupdf.open(f'app/inputs/{directory}/{file}')
+        for doc in document:
+            print(doc.get_textpage().extractText())"""
+"""            
+doc = pymupdf.open(f"C:/Users/joaquin.astorga/mis_proyectos/BAPS/app/inputs/2021/Aula 360.pdf")
 
-"""def extrac_data_from_files(dir):
-    doc = pymupdf.open(f'inputs/{dir}/Centro de Lectura y Biblioteca Escolar (CRA).pdf')
-    for index , page in enumerate(doc):
-        text = page.get_textpage().extractText()
-        print(f'{index}/{text}')
-  
+list_words = []
 
-for directory in os.listdir("inputs"):
-    print(f"============{directory}========")
-    for file in os.listdir(f"inputs/{directory}"):
-        extrac_data_from_files(directory)
-"""
+for index, files in enumerate(doc):
+    files = files.get_textpage().extractText()
+    if index == 3:
+        files = str(files)
+        file = files.replace("\n"," ")
+        for word in file.split(" "):
+            list_words.append(word)
+print(list_words)
 
 
-
-
-
+for word in list_words:
+    print(word)
+        #print(f'{index}-{files}')"""

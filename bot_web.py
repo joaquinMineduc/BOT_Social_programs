@@ -8,7 +8,7 @@ import requests
 import os
 
 
-route= os.getcwd()
+route = os.getcwd()
 base_directory = os.path.basename(route)
 
 driver = webdriver.Chrome()
@@ -25,7 +25,7 @@ def extract_data(driver, year):
     for name_program in names_programs:
         list_names_programs.append(name_program.text)
         
-    new_directory = os.path.join("inputs",f'{year}')
+    new_directory = os.path.join("app/inputs",f'{year}')
     if not os.path.exists(new_directory):
         os.makedirs(new_directory)
 
