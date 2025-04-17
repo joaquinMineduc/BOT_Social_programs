@@ -1,7 +1,7 @@
 import fitz  # PyMuPDF
 
-def catch_graphic():
-    pdf_path = 'C:/Users/joaquin.astorga/mis_proyectos/BAPS/app/inputs/2021/Aula 360.pdf'  # Cambia esto por la ruta a tu PDF
+def catch_graphic(pdf_path):
+    #pdf_path = 'C:/Users/joaquin.astorga/mis_proyectos/BAPS/app/inputs/2021/Aula 360.pdf'  # Cambia esto por la ruta a tu PDF
     doc = fitz.open(pdf_path)
 
     # Recorremos cada página
@@ -14,11 +14,10 @@ def catch_graphic():
                 base_image = doc.extract_image(xref)
                 image_bytes = base_image["image"]
                 image_ext = base_image["ext"]
-                image_filename = f"grafico_p{page_index+1}_{img_index+1}.{image_ext}"   
+                image_filename = f"img_grap.{image_ext}"   
                   
     # Guardar imagen extraída
     with open(f'app/manipulation_data/grap/{image_filename}', "wb") as f:
         f.write(image_bytes)      
     print(f"✅ Imagen extraída y guardada como: {image_filename}")
 
-catch_graphic()
