@@ -13,21 +13,26 @@ for page_layout in extract_pages('C:/Users/joaquin.astorga/mis_proyectos/BAPS/ap
  
 data_df = []    
 for index, text in enumerate(list_texts):
-    #print(f'{index}--> {text}')
-    if index in [0,1,11,19,22,28,52,85]:
+    print(f'{index}--> {text}')
+"""    if index in [0,1,11,19,22,28,52,85]:
         if index == 0:
             data_df.append(text[-5:-1])
         else:
             data_df.append(text)
     else:
-         if index == 30 and text == 'III. DESEMPEÑO 2021 DEL PROGRAMA\n':
+        if index == 30 and text == 'III. DESEMPEÑO 2021 DEL PROGRAMA\n':
             catch_graphic('C:/Users/joaquin.astorga/mis_proyectos/BAPS/app/inputs/2021/Aula 360.pdf')
             elemets = extract_data_from_img('app/manipulation_data/grap/img_grap.png')
             for element in elemets:
                 data_df.append(element)
-    
-print(data_df)
+        if index == 57 and text[0:20] == 'GASTO POR SUBTÍTULOS':
+           
+           
+           """
+#print(data_df)
        
+       
+        
 """directories = os.listdir("app/inputs")
 for directory in directories:
     for file in os.listdir(f'app/inputs/{directory}'):
