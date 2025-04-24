@@ -2,36 +2,78 @@ from pdfminer.high_level import extract_pages
 from pdfminer.layout import LTTextContainer
 from get_graph import catch_graphic
 from get_data_from_graph import extract_data_from_img
+import pdfplumber
 import pandas as pd
 
+
+def format_data(list_data):
+    content_text = ""
+    for text in list_data:
+        content_text = content_text + text
+    return content_text
+    
+
+def get_data_by_category_unificated(list_texts, conditional_target):
+    list_data = []
+    last_target = ""
+    for text in list_texts: # recorre nuevamente la lista
+        if text == conditional_target: # si el target condicion es = al texto detectado en el ciclo
+            last_target = text # Se añade el texto al ultimo target
+        if text != conditional_target and str(text).isupper(): 
+# Si el texto es distinto al targe conidicnal y además no contiene el formato de seccion modifica el ultimo target   
+            last_target = text
+        if last_target == conditional_target:
+            list_data.append(text)
+    list_data.pop(0)
+    data = format_data(list_data)
+    return data
+
+
+def get_data_from_tables(file):
+    with pdfplumber.open(file) as pdf:
+        first_page = pdf.pages[0]
+        second_page = pdf.pages[1]
+        table_one = first_page.extract_table()
+        table_two = second_page.extract_table()
+        for row in table_one:
+            print(row[-1])
+            
+        for row in table_two:
+            print(row[-1])
+      
+        
+        
+
 list_texts = []
-for page_layout in extract_pages('C:/Users/joaquin.astorga/mis_proyectos/BAPS/app/inputs/2021/Aula 360.pdf'):
+for page_layout in extract_pages('app/inputs/2021/Educación Especial Diferencial.pdf'):
     for element in page_layout:
         if isinstance(element, LTTextContainer):
             list_texts.append(element.get_text())
             #print(element.get_text().replace("\n",""))
- 
-data_df = []    
+
+data_df = []
+data_dict = dict()
 for index, text in enumerate(list_texts):
-    print(f'{index}--> {text}')
-"""    if index in [0,1,11,19,22,28,52,85]:
-        if index == 0:
-            data_df.append(text[-5:-1])
-        else:
-            data_df.append(text)
-    else:
-        if index == 30 and text == 'III. DESEMPEÑO 2021 DEL PROGRAMA\n':
-            catch_graphic('C:/Users/joaquin.astorga/mis_proyectos/BAPS/app/inputs/2021/Aula 360.pdf')
-            elemets = extract_data_from_img('app/manipulation_data/grap/img_grap.png')
-            for element in elemets:
-                data_df.append(element)
-        if index == 57 and text[0:20] == 'GASTO POR SUBTÍTULOS':
-           
-           
-           """
-#print(data_df)
+    if index == 0:
+        data_dict['Año monitoreo'] = text[-5:-1]
+    if index == 1:
+        data_dict['nombre programa'] = text
+    if text == 'HISTORIAL EVALUATIVO DEL PROGRAMA\n':
+        data_dict[f'{text}'] = get_data_by_category_unificated(list_texts, text)
+    if text == 'OBSERVACIONES EVALUADOR(ES)\n':
+        get_data_from_tables('app/inputs/2021/Educación Especial Diferencial.pdf')
+        
+        
+        
+        
+#print(data_dict)
+            
+    
+ 
+ 
        
-       
+"""df_data = pd.DataFrame([data_dict])
+df_data.to_excel("2021.xlsx",sheet_name="2021")"""
         
 """directories = os.listdir("app/inputs")
 for directory in directories:
