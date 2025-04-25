@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
-from functions import get_last_four_years
+from app.manipulation_data.functions import get_last_four_years
 import time
 import requests
 import os

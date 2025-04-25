@@ -1,6 +1,7 @@
 import fitz  # PyMuPDF
+from functions import cut_img, extract_data_from_img
 
-def catch_graphic(pdf_path):
+def get_graphic(pdf_path):
     #pdf_path = 'C:/Users/joaquin.astorga/mis_proyectos/BAPS/app/inputs/2021/Aula 360.pdf'  # Cambia esto por la ruta a tu PDF
     doc = fitz.open(pdf_path)
 
@@ -20,4 +21,7 @@ def catch_graphic(pdf_path):
     with open(f'app/manipulation_data/grap/{image_filename}', "wb") as f:
         f.write(image_bytes)      
     print(f"✅ Imagen extraída y guardada como: {image_filename}")
+    cut_img("app/manipulation_data/grap/img_grap.png", 210, 340, 0, 235 )
 
+get_graphic("app/inputs/2021/Aula 360.pdf")
+print(extract_data_from_img("app/manipulation_data/grap/img_grap.png"))
